@@ -1,0 +1,650 @@
+info:
+  title: ListenBrainz Labs API
+  version: 1.0.0
+  description: ListenBrainz Labs API is the MetaBrainz Dataset Hoster API
+tags:
+  - name: Post API
+  - name: Get API
+openapi: 3.0.0
+servers:
+  - url: https://labs.api.listenbrainz.org
+components:
+  schemas: {}
+  parameters: {}
+paths:
+  /artist-country-code-from-artist-mbid/json:
+    get:
+      tags:
+        - Get API
+      description: Given artist MBIDs look up countries for those artists. Any
+        artist_mbids not found in the database will be omitted from the results.
+        If none are found a 404 error is returned
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            example: 190e78ac-8f44-4bf1-a4ff-95ed9376ad9e
+          required: true
+          name: artist_mbid
+          in: query
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    artist_mbid:
+                      type: string
+                      format: uuid
+                      example: 190e78ac-8f44-4bf1-a4ff-95ed9376ad9e
+                    artist_name:
+                      type: string
+                      example: Motion City Soundtrack
+                    area_id:
+                      type: number
+                      example: 222
+                    country_code:
+                      type: string
+                      example: US
+                  required:
+                    - artist_mbid
+                    - artist_name
+                    - area_id
+                    - country_code
+        "400":
+          description: Bad Request
+          content:
+            text/html: &a1
+              schema:
+                type: string
+                example: >-
+                  <!doctype html>
+
+                  <html lang="en">
+
+                  <title>400 Bad Request</title>
+
+                  <h1>Bad Request</h1>
+
+                  <p>The request could not be understood by the server due to
+                  malformed syntax.</p>
+
+                  </html>
+        "404":
+          description: Not found
+    post:
+      tags:
+        - Post API
+      description: Given artist MBIDs look up countries for those artists. Any
+        artist_mbids not found in the database will be omitted from the results.
+        If none are found a 404 error is returned
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  artist_mbid:
+                    type: string
+                    format: uuid
+                    example: 190e78ac-8f44-4bf1-a4ff-95ed9376ad9e
+                required:
+                  - artist_mbid
+              minItems: 1
+              maxItems: 1
+            example:
+              - artist_mbid: 190e78ac-8f44-4bf1-a4ff-95ed9376ad9e
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    artist_mbid:
+                      type: string
+                      format: uuid
+                      example: 190e78ac-8f44-4bf1-a4ff-95ed9376ad9e
+                    artist_name:
+                      type: string
+                      example: Motion City Soundtrack
+                    area_id:
+                      type: number
+                      example: 222
+                    country_code:
+                      type: string
+                      example: US
+                  required:
+                    - artist_mbid
+                    - artist_name
+                    - area_id
+                    - country_code
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+        "404":
+          description: Not found
+  /spotify-id-from-mbid/json:
+    get:
+      tags:
+        - Get API
+      description: " Given a recording mbid, lookup its metadata using canonical
+        metadata tables and using that attempt to find a suitable match in
+        Spotify."
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+          required: true
+          name: recording_mbid
+          in: query
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recording_mbid:
+                      type: string
+                      format: uuid
+                      example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                    artist_name:
+                      type: string
+                      example: Motion City Soundtrack
+                    release_name:
+                      type: string
+                      example: Commit This to Memory
+                    track_name:
+                      type: string
+                      example: Everything Is Alright
+                    spotify_track_ids:
+                      type: array
+                      items:
+                        type: string
+                      example: &a2
+                        - 6xyiHZgrmXw7sMyYXbXjPV
+                  required:
+                    - recording_mbid
+                    - artist_name
+                    - release_name
+                    - track_name
+                    - spotify_track_ids
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+    post:
+      tags:
+        - Post API
+      description: " Given a recording mbid, lookup its metadata using canonical
+        metadata tables and using that attempt to find a suitable match in
+        Spotify."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  recording_mbid:
+                    type: string
+                    format: uuid
+                    example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                required:
+                  - recording_mbid
+              minItems: 1
+              maxItems: 1
+            example:
+              - recording_mbid: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recording_mbid:
+                      type: string
+                      format: uuid
+                      example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                    artist_name:
+                      type: string
+                      example: Motion City Soundtrack
+                    release_name:
+                      type: string
+                      example: Commit This to Memory
+                    track_name:
+                      type: string
+                      example: Everything Is Alright
+                    spotify_track_ids:
+                      type: array
+                      items:
+                        type: string
+                      example: *a2
+                  required:
+                    - recording_mbid
+                    - artist_name
+                    - release_name
+                    - track_name
+                    - spotify_track_ids
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+  /spotify-id-from-metadata/json:
+    get:
+      tags:
+        - Get API
+      description: Given artist name, release name, and track name, attempt to find a
+        suitable match in Spotify.
+      parameters:
+        - schema:
+            type: string
+            example: Motion City Soundtrack
+          required: true
+          name: artist_name
+          in: query
+        - schema:
+            type: string
+            example: Commit This to Memory
+          required: true
+          name: release_name
+          in: query
+        - schema:
+            type: string
+            example: Everything Is Alright
+          required: true
+          name: track_name
+          in: query
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    artist_name:
+                      type: string
+                      example: Motion City Soundtrack
+                    release_name:
+                      type: string
+                      example: Commit This to Memory
+                    track_name:
+                      type: string
+                      example: Everything Is Alright
+                    spotify_track_ids:
+                      type: array
+                      items:
+                        type: string
+                      example: &a3
+                        - 6xyiHZgrmXw7sMyYXbXjPV
+                  required:
+                    - artist_name
+                    - release_name
+                    - track_name
+                    - spotify_track_ids
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+    post:
+      tags:
+        - Post API
+      description: Given artist name, release name, and track name, attempt to find a
+        suitable match in Spotify.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  artist_name:
+                    type: string
+                    example: Motion City Soundtrack
+                  release_name:
+                    type: string
+                    example: Commit This to Memory
+                  track_name:
+                    type: string
+                    example: Everything Is Alright
+                required:
+                  - artist_name
+                  - release_name
+                  - track_name
+              minItems: 1
+              maxItems: 1
+            example:
+              - artist_name: Motion City Soundtrack
+                release_name: Commit This to Memory
+                track_name: Everything Is Alright
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    artist_name:
+                      type: string
+                      example: Motion City Soundtrack
+                    release_name:
+                      type: string
+                      example: Commit This to Memory
+                    track_name:
+                      type: string
+                      example: Everything Is Alright
+                    spotify_track_ids:
+                      type: array
+                      items:
+                        type: string
+                      example: *a3
+                  required:
+                    - artist_name
+                    - release_name
+                    - track_name
+                    - spotify_track_ids
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+  /similar-recordings/json:
+    get:
+      tags:
+        - Get API
+      description: view recordings similar to a given recording and algorithm
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+          required: true
+          name: recording_mbids
+          in: query
+        - schema:
+            type: string
+            enum: &a4
+              - session_based_days_9000_session_300_contribution_5_threshold_15_limit_50_skip_30
+            example: session_based_days_9000_session_300_contribution_5_threshold_15_limit_50_skip_30
+          required: true
+          name: algorithm
+          in: query
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recording_mbid:
+                      type: string
+                      format: uuid
+                      example: e3b7cd96-c41d-497a-b401-dc7494f638db
+                    recording_name:
+                      type: string
+                      example: The Middle
+                    artist_credit_name:
+                      type: string
+                      example: Jimmy Eat World
+                    artist_credit_mbids:
+                      type: array
+                      nullable: true
+                      items:
+                        type: string
+                        format: uuid
+                    release_name:
+                      type: string
+                      example: Bleed American
+                    release_mbid:
+                      type: string
+                      format: uuid
+                      example: 29bf4852-0f9b-4f21-b2a6-6eff6003ef33
+                    caa_id:
+                      type: number
+                      example: 31536400421
+                    caa_release_mbid:
+                      type: string
+                      format: uuid
+                      example: c42c37be-11e3-472a-ae6c-429c8e300efd
+                    score:
+                      type: number
+                      example: 375
+                    reference_mbid:
+                      type: string
+                      format: uuid
+                      example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                  required:
+                    - recording_mbid
+                    - recording_name
+                    - artist_credit_name
+                    - artist_credit_mbids
+                    - release_name
+                    - release_mbid
+                    - caa_id
+                    - caa_release_mbid
+                    - score
+                    - reference_mbid
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+    post:
+      tags:
+        - Post API
+      description: view recordings similar to a given recording and algorithm
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  recording_mbids:
+                    type: array
+                    items:
+                      type: string
+                      format: uuid
+                    example:
+                      - 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                  algorithm:
+                    type: string
+                    enum: *a4
+                    example: session_based_days_9000_session_300_contribution_5_threshold_15_limit_50_skip_30
+                required:
+                  - recording_mbids
+                  - algorithm
+              minItems: 1
+              maxItems: 1
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recording_mbid:
+                      type: string
+                      format: uuid
+                      example: e3b7cd96-c41d-497a-b401-dc7494f638db
+                    recording_name:
+                      type: string
+                      example: The Middle
+                    artist_credit_name:
+                      type: string
+                      example: Jimmy Eat World
+                    artist_credit_mbids:
+                      type: array
+                      nullable: true
+                      items:
+                        type: string
+                        format: uuid
+                    release_name:
+                      type: string
+                      example: Bleed American
+                    release_mbid:
+                      type: string
+                      format: uuid
+                      example: 29bf4852-0f9b-4f21-b2a6-6eff6003ef33
+                    caa_id:
+                      type: number
+                      example: 31536400421
+                    caa_release_mbid:
+                      type: string
+                      format: uuid
+                      example: c42c37be-11e3-472a-ae6c-429c8e300efd
+                    score:
+                      type: number
+                      example: 375
+                    reference_mbid:
+                      type: string
+                      format: uuid
+                      example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                  required:
+                    - recording_mbid
+                    - recording_name
+                    - artist_credit_name
+                    - artist_credit_mbids
+                    - release_name
+                    - release_mbid
+                    - caa_id
+                    - caa_release_mbid
+                    - score
+                    - reference_mbid
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+  /bulk-tag-lookup/json:
+    get:
+      tags:
+        - Get API
+      description: Bulk MusicBrainz Tag/Popularity by recording MBID Lookup
+      parameters:
+        - schema:
+            type: string
+            format: uuid
+            example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+          required: true
+          name: recording_mbid
+          in: query
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recording_mbid:
+                      type: string
+                      format: uuid
+                      example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                    tag:
+                      type: string
+                      example: blues
+                    percent:
+                      type: number
+                      description: the popularity of the track in the context of the tag
+                      example: 0.022332730560578662
+                    source:
+                      type: string
+                      example: recording
+                  required:
+                    - recording_mbid
+                    - tag
+                    - percent
+                    - source
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
+    post:
+      tags:
+        - Post API
+      description: Bulk MusicBrainz Tag/Popularity by recording MBID Lookup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  recording_mbid:
+                    type: string
+                    format: uuid
+                    example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                required:
+                  - recording_mbid
+              minItems: 1
+              maxItems: 1
+            example:
+              - recording_mbid: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+      responses:
+        "200":
+          description: successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    recording_mbid:
+                      type: string
+                      format: uuid
+                      example: 7db2c09d-345f-46e6-900e-0f4499e29c3d
+                    tag:
+                      type: string
+                      example: blues
+                    percent:
+                      type: number
+                      description: the popularity of the track in the context of the tag
+                      example: 0.022332730560578662
+                    source:
+                      type: string
+                      example: recording
+                  required:
+                    - recording_mbid
+                    - tag
+                    - percent
+                    - source
+        "400":
+          description: Bad Request
+          content:
+            text/html: *a1
