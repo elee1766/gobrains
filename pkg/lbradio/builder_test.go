@@ -46,4 +46,21 @@ func TestBuilderPromptItem(t *testing.T) {
 		Option: "nosim",
 	})
 
+	require.Equal(t, "artist:(Motion City Soundtrack):10:nosim", b.String())
+}
+
+func TestBuilderPopurri(t *testing.T) {
+	b := lbradio.PromptBuilder{}
+
+	b.AddPromptItem(lbradio.PromptItem{
+		Entity: "artist",
+		Values: []string{"Motion City Soundtrack"},
+		Weight: 10,
+		Option: lbradio.OptionTypeHard,
+	})
+	b.Add("artist", "Brand New")
+	b.AddWithWeight("recs", 10, "tuxpaint")
+
+	require.Equal(t, "artist:(Motion City Soundtrack):10:hard artist:(Brand New) recs:(tuxpaint):10", b.String())
+
 }
