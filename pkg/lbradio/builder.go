@@ -24,7 +24,7 @@ func (o *PromptBuilder) AddWithWeight(entity EntityType, count int, values ...st
 	return o
 }
 
-func (o *PromptBuilder) AddWithOption(entity EntityType, option string, values ...string) *PromptBuilder {
+func (o *PromptBuilder) AddWithOption(entity EntityType, option OptionType, values ...string) *PromptBuilder {
 	*o = append(*o, PromptItem{
 		Entity: entity,
 		Option: option,
