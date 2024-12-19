@@ -19,7 +19,8 @@ func TestBuilderSimple(t *testing.T) {
 func TestBuilderWeight(t *testing.T) {
 	b := lbradio.PromptBuilder{}
 
-	b.Add("artist", "Motion City Soundtrack")
+	// can use enum or not enum
+	b.Add(lbradio.EntityTypeArtist, "Motion City Soundtrack")
 	b.AddWithWeight("artist", 10, "Brand New")
 	str := b.String()
 
@@ -29,7 +30,7 @@ func TestBuilderWeight(t *testing.T) {
 func TestBuilderOptions(t *testing.T) {
 	b := lbradio.PromptBuilder{}
 
-	b.AddWithOption("artist", "nosim", "Motion City Soundtrack")
+	b.AddWithOption("artist", lbradio.OptionTypeNosim, "Motion City Soundtrack")
 	str := b.String()
 
 	require.Equal(t, "artist:(Motion City Soundtrack):nosim", str)
