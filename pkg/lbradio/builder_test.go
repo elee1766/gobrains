@@ -54,13 +54,13 @@ func TestBuilderPopurri(t *testing.T) {
 
 	b.AddPromptItem(lbradio.PromptItem{
 		Entity: "artist",
-		Values: []string{"Motion City Soundtrack"},
+		Values: []string{"Motion City Soundtrack", "The Academy Is..."},
 		Weight: 10,
 		Option: lbradio.OptionTypeHard,
 	})
 	b.Add("artist", "Brand New")
 	b.AddWithWeight("recs", 10, "tuxpaint")
 
-	require.Equal(t, "artist:(Motion City Soundtrack):10:hard artist:(Brand New) recs:(tuxpaint):10", b.String())
+	require.Equal(t, "artist:(Motion City Soundtrack,The Academy Is...):10:hard artist:(Brand New) recs:(tuxpaint):10", b.String())
 
 }
